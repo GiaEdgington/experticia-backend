@@ -51,13 +51,10 @@ router.delete('/:contactId', async (req, res) => {
 });
 
 //Update Contact 
-//REVIEW $set
 router.patch('/:contactId', async (req, res) => {
     try{
         const updatedContact = await Contact.updateOne(
-            { _id: req.params.contactId },
-            { $set: {} }
-            );
+            { _id: req.params.contactId }, req.body);
         res.json(updatedContact);
     }catch(err){
         res.json({ message: err })
