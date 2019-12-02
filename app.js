@@ -1,23 +1,19 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 //Import Routes
 const contactRoute = require('./routes/contact');
 
-app.use('/contact', contactRoute);
 
 //Middlewares
-app.use('/message', () => {
-    //console.log('this is middleware')
-})
+app.use('/contact', contactRoute);
 
 //ROUTES
 app.get('/', (req, res) => {
-    res.send('We are on home');
-})
-
-app.get('/message', (req, res) => {
     res.send('We are on home');
 })
 
