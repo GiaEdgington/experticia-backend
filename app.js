@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
+//Import Routes
+const contactRoute = require('./routes/contact');
+
+app.use('/contact', contactRoute);
+
 //Middlewares
 app.use('/message', () => {
     //console.log('this is middleware')
@@ -17,8 +22,9 @@ app.get('/message', (req, res) => {
 })
 
 //Connect to DB
-mongoose.connect('mongodb://127.0.0.1:27017', () =>
-    console.log('connected to DB!')
+mongoose.connect('mongodb://127.0.0.1:27017',
+    { useNewUrlParser: true },
+    () => console.log('connected to DB!')
 );
 
 //Start listening
