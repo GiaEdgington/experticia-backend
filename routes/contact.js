@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Contact = require('../models/Contact');
+const nodemailer = require('nodemailer');
 
 
 //Get back all contacts
@@ -25,9 +26,39 @@ router.post('/', async (req, res) => {
     try{
         const savedContact = await contact.save();
         res.json(savedPost);
+        console.log('test');
     }catch(err){
         res.json({ message: err });
     }
+
+    console.log("got here");
+
+    let transporter = nodemailer.createTransport({
+        //host: "smtp.gmail.com",
+        //port: 465,
+        //secure: true,
+        service: "Gmail",
+        auth: {
+            user: "email",
+            pass: "email"
+        }
+    });
+
+    let info = transporter.sendMail({
+        from: "email",
+        to: "email",
+        subject: "New Contact",
+        html: `Name: ${req.body.name}<br>
+               Email: ${req.body.email}<br>
+               Teléfono: ${req.body.phone}<br>
+               Caso: ${req.body.case}`
+    }, function(error, response){
+        if(error){
+            console.log(error);
+        }else {
+            console.log("Message sent:" + res.message)
+        }
+    });
 });
 
 //Specific Contact
