@@ -3,6 +3,12 @@ const router = express.Router();
 const Contact = require('../models/Contact');
 const nodemailer = require('nodemailer');
 
+require('dotenv').config();
+
+
+const email = process.env.E_EMAIL;
+const password = process.env.E_PASSWORD;
+
 
 //Get back all contacts
 router.get('/', async (req, res) => {
@@ -34,19 +40,16 @@ router.post('/', async (req, res) => {
     console.log("got here");
 
     let transporter = nodemailer.createTransport({
-        //host: "smtp.gmail.com",
-        //port: 465,
-        //secure: true,
         service: "Gmail",
         auth: {
-            user: "email",
-            pass: "email"
+            user: email,
+            pass: password
         }
     });
 
     let info = transporter.sendMail({
-        from: "email",
-        to: "email",
+        from: "experticia.contacts@gmail.com",
+        to: "experticia.contacts@gmail.com",
         subject: "New Contact",
         html: `Name: ${req.body.name}<br>
                Email: ${req.body.email}<br>
@@ -56,7 +59,7 @@ router.post('/', async (req, res) => {
         if(error){
             console.log(error);
         }else {
-            console.log("Message sent:" + res.message)
+            console.log("Message sent")
         }
     });
 });
