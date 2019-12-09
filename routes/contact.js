@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Contact = require('../models/Contact');
 const nodemailer = require('nodemailer');
-const { check, validationResult } = require('express-validator');
+const { check, validationResult } = require('express-validator/check');
 
 require('dotenv').config();
 
@@ -23,30 +23,31 @@ router.get('/', async (req, res) => {
 
 //Submit Contact
 router.post('/', [
-    check('email').isEmail(),
-    check('case').isLength({ min: 20 })
+    check('email', 'Correo electrónico no válido').not().isEmpty().isEmail()
+    //check('case', 'Debe explicar su caso').not().isEmpty()
 ], async (req, res) => {
-
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-        return res.status(422).json( { errors: errors.array() });
+        console.log(errors.array());
+        return res.json(errors);
     }
-        const contact = new Contact ({
-            name: req.body.name,
-            email: req.body.email,
-            phone: req.body.phone,
-            case: req.body.case,
-            date: req.body.date
-        });
-        try{
-            const savedContact = await contact.save();
-            res.json(savedPost);
-            //console.log('test');
-        }catch(err){
-            res.json({ message: err });
-        }
 
-    //console.log("got here");
+    const contact = new Contact ({
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        case: req.body.case,
+        date: req.body.date
+    });
+    try{
+        const savedContact = await contact.save();
+        res.json(savedPost);
+        console.log('test');
+    }catch(err){
+        res.json({ message: err });
+    }
+
+    console.log("got here");
 
     let transporter = nodemailer.createTransport({
         service: "Gmail",
