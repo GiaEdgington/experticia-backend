@@ -29,4 +29,4 @@ mongoose.connect('mongodb://127.0.0.1:27017/experticia',
 
 //Start listening
 
-app.listen(5000);
+app.listen(process.env.PORT || 5000);
