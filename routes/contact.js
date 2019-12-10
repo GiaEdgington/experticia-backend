@@ -23,12 +23,14 @@ router.get('/', async (req, res) => {
 
 //Submit Contact
 router.post('/', [
-    check('email', 'Correo electrónico no válido').not().isEmpty().isEmail()
-    //check('case', 'Debe explicar su caso').not().isEmpty()
+    check('name', '* Mandatorio').not().isEmpty(),
+    check('email', '* Correo electrónico no válido').not().isEmpty().isEmail(),
+    check('case', '* Debe explicar brevemente su caso').not().isEmpty(),
+    check('phone', '* Número inválido').isLength({ min: 9})
 ], async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-        console.log(errors.array());
+        //console.log(errors.array());
         return res.json(errors);
     }
 
