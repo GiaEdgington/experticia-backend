@@ -10,11 +10,11 @@ app.use(bodyParser.json());
 app.use(cors());
 
 //Import Routes
-const contactRoute = require('./routes/contact');
+const contactRoute = require('./routes/contacts');
 
 
 //Middlewares
-app.use('/contact', contactRoute);
+app.use('/contacts', contactRoute);
 
 //ROUTES
 app.get('/', (req, res) => {
@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 })
 
 //Connect to DB
-mongoose.connect('mongodb://127.0.0.1:27017',
+mongoose.connect('mongodb://127.0.0.1:27017/experticia',
     { useNewUrlParser: true },
     () => console.log('connected to DB!')
 );
